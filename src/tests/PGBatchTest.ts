@@ -1,7 +1,15 @@
 import {UsageStats} from "../UsageStats";
 
-const pgp = require('pg-promise')({noWarnings: true});
+const pgp = require('pg-promise')();
 import {Document} from "../Document";
+
+const db = pgp({
+    host: "localhost",
+    port: 5432,
+    user: "postgres",
+    password: "test",
+    database: "perf_test"
+});
 
 const cs = new pgp.helpers.ColumnSet([
     'id',
@@ -15,15 +23,8 @@ const cs = new pgp.helpers.ColumnSet([
 export class PGBatchTest {
 
     public static start(docs: Document[]) {
-        let db = pgp({
-            host: "localhost",
-            port: 5432,
-            user: "postgres",
-            password: "test",
-            database: "perf_test"
-        });
 
-        let start = new Date().getTime();
+        const start = Date.now();
         const us = new UsageStats();
         us.start();
 
@@ -36,9 +37,9 @@ export class PGBatchTest {
 
         return db.none(sql)
             .then(() => {
-                let end = new Date().getTime();
+                const end = Date.now();
                 const stats = us.stop();
-                
+
                 console.log("[PG-Batch] Call to persist took " + (end - start) + " milliseconds.");
                 // console.log(`
                 // 	avg cpu: ${stats.avgCpu}
