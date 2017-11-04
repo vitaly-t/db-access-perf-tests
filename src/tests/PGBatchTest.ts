@@ -29,11 +29,11 @@ export class PGBatchTest {
         us.start();
 
         const sql = pgp.helpers.insert(docs, cs) + ` ON CONFLICT (id) DO UPDATE SET
-                "docsId" = excluded."docId",
-                label = excluded.label,
-                context = excluded.context,
-                distributions = excluded.distributions,
-                date = excluded.date`;
+                "docsId" = EXCLUDED."docId",
+                label = EXCLUDED.label,
+                context = EXCLUDED.context,
+                distributions = EXCLUDED.distributions,
+                date = EXCLUDED.date`;
 
         return db.none(sql)
             .then(() => {
