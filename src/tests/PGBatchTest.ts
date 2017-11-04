@@ -37,10 +37,10 @@ export class PGBatchTest {
 
         return db.none(sql)
             .then(() => {
-                const end = Date.now();
+                const duration = Date.now() - start;
                 const stats = us.stop();
 
-                console.log("[PG-Batch] Call to persist took " + (end - start) + " milliseconds.");
+                console.log("[PG-Batch] Call to persist took " + duration + " milliseconds.");
                 // console.log(`
                 // 	avg cpu: ${stats.avgCpu}
                 // 	avg memory: ${stats.avgMemory}
